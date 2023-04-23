@@ -3,21 +3,14 @@
 #
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+if [[ $- != *i* ]]; then
+  return
+fi
 
-
-# No history size limit
-HISTSIZE=
-HISTFILESIZE=
-
-# No duplicate commands saved to history
-export HISTCONTROL=ignoreboth:erasedups
-
-# Append to history instead of overwriting
-# shopt -s histappend
-
-# Try to save multiline command in one entry
-shopt -s cmdhist
+# Load history settings
+if test -f "~/.config/history_config.sh"; then
+  source ~/.config/history_config.sh
+fi
 
 # Minor typos are corrected in cd
 shopt -s cdspell
@@ -27,26 +20,45 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 # Nano settings
-alias nano='nano -AMPZabceijlm -T 2'
+# -A smart home button
+# -E convert tabs to spaces
+# -J 80 vertical strip at 80 char
+# -M remove trialing whitespaces
+# -P remember positoin in file
+# -S wrap long lines
+# -T 2 set tabsize to 2
+# -Z Backspace and Delete remove selected region
+# -a wrap at whitespace
+# -b hard-wrap current line
+# -c always show cursor pos
+# -e adds line under title
+# -i autoindent
+# -j half screen scrolling
+# -l linenumbers
+# -m enable mouse interactions
+alias nano='nano -AEMPSZabceijlm -J 80 -T 2'
 
-# Colorize the ls output
+# ls human readable colorized output
 alias ls='ls -h --color=auto --group-directories-first'
 
 # Detailed long listing with ls
 alias ll='ls -lah'
 alias la='ll'
 
-# Less with clean exit and scrollback
-LESS="-iwgerMFKQX --mouse --wheel-lines=4"; export LESS
-
-# Less is more colorful
-export LESS_TERMCAP_mb=$'\E[1;31m'
-export LESS_TERMCAP_md=$'\E[1;36m'
-export LESS_TERMCAP_me=$'\E[0m'
-# export LESS_TERMCAP_so=$'\E[01;44;33m'
-# export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[1;32m'
-export LESS_TERMCAP_ue=$'\E[0m'
+# Less settings
+# -e exit on second eof
+# -F quit if file fits on screen
+# -g highlite search results
+# -i ignore case
+# -K ^C closes less
+# -M verbose prompt
+# -Q termial bell is siletn
+# -r display raw control characters
+# -w after scrolling highlite first new line
+# -X no unneded screen clears
+# --mouse enable mouse
+# --wheel-lines=4 sets scrolling speed
+LESS="-eFgiKMQrwX --mouse --wheel-lines=4"; export LESS
 
 # Colorize the grep output
 alias grep='grep --color=auto'
