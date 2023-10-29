@@ -1,88 +1,137 @@
-local opt = vim.opt
-local g = vim.g
 -- general
-opt.termguicolors = true
-opt.undofile = true
-opt.autoread = true
-opt.fileformats = { 'unix', 'dos', 'mac'}
+vim.opt.termguicolors = true
+vim.opt.undofile = true
+vim.opt.autoread = true
+vim.opt.fileformats = { "unix", "dos", "mac" }
+vim.opt.autochdir = true
+
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+  pattern = { "*" },
+  callback = function()
+    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+      vim.api.nvim_exec("normal! g'\"", false)
+    end
+  end,
+})
 
 -- indenting
-opt.expandtab = true
-opt.shiftwidth = 2
-opt.smartindent = true
-opt.tabstop = 2
-opt.softtabstop = 2
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
 
-opt.autoindent = true
-opt.smartindent = true
+vim.opt.smartindent = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
 
 -- remove trialing whitespaces on save
 vim.api.nvim_create_autocmd({ "bufwritepre" }, {
-    pattern = {"*"},
-    callback = function(ev)
-        save_cursor = vim.fn.getpos(".")
-        vim.cmd([[%s/\s\+$//e]])
-        vim.fn.setpos(".", save_cursor)
-    end,
+  pattern = { "*" },
+  callback = function(ev)
+    local save_cursor = vim.fn.getpos(".")
+    vim.cmd([[%s/\s\+$//e]])
+    vim.fn.setpos(".", save_cursor)
+  end,
 })
 
 -- search
-opt.ignorecase = true
-opt.smartcase = true
-opt.hlsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
 
 -- cursor
-opt.mouse = 'a'
-opt.cursorline = true
+vim.opt.mouse = "a"
+vim.opt.cursorline = true
 
-opt.scrolloff = 25
-opt.sidescrolloff = 15
+vim.opt.scrolloff = 999
+vim.opt.sidescrolloff = 15
+
+vim.opt.showmatch = true
 
 -- Column
-opt.number = true
-opt.relativenumber = true
-opt.ruler = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.ruler = true
 
-opt.signcolumn = "yes"
+vim.opt.signcolumn = "yes"
 
 -- Spliting
-opt.splitbelow = true
-opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
 -- Wraping
-opt.display = 'lastline'
-opt.whichwrap:append "<>[]hl"
+vim.opt.display = "lastline"
+vim.opt.whichwrap:append("<>[]hl")
 
--- Key bindings
+-- Leader
+vim.g.mapleader = ";"
+
+-- copy and paste
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+
+-- Open explorer
+vim.keymap.set("n", "<leader>e", ":Lexplore<cr>")
+
+-- Fold with space
+vim.keymap.set("n", "<space>", "za")
+
+-- Move lines up and down
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==")
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==")
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
+vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<CR>==gi")
+vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<CR>==gi")
+
+-- Duplicate current line
+vim.keymap.set("n", "<C-d>", "yypg;")
+vim.keymap.set("i", "<C-d>", "<esc>yypgi")
+
+-- Format
+vim.keymap.set("n", "<leader><space>", vim.lsp.buf.format)
+-- Quick insert mode exit
+vim.keymap.set("i", ";f", "<Esc>")
+
+-- Unhighlight
+vim.keymap.set("n", "<Esc>", ":nohlsearch<return><Esc>", { silent = true })
+vim.keymap.set("n", "<C-l>", ':let @/ = ""<return><C-l>')
+
+-- Easy newline from normal mode
+vim.keymap.set("n", "<C-CR>", "o<Esc>")
+vim.keymap.set("n", "<C-S-CR>", "O<Esc>")
+
+-- Newline without comment
+vim.keymap.set("n", "<CR>", "<C-CR>^D", { remap = true })
+vim.keymap.set("n", "<S-CR>", "<C-S-CR>^D", { remap = true })
+
+-- Jump to empty newline in insert mode
+vim.keymap.set("i", "<S-CR>", "<ESC><CR>A", { remap = true })
+vim.keymap.set("i", "<C-S-CR>", "<ESC><C-CR>A", { remap = true })
+
+-- Moving between buffers
+vim.keymap.set("n", "<C-j>", ":bnext<CR>")
+vim.keymap.set("n", "<C-k>", ":bprevious<CR>")
 
 -- Plugins
-local Plug = vim.fn['plug#']
+require("lacka.lazy")
 
-vim.call('plug#begin', '~/.config/nvim/plugged')
+-- Netrw config
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_winsize = 20
 
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'lambdalisue/suda.vim'
-Plug 'akinsho/toggleterm.nvim'
-Plug 'tanvirtin/monokai.nvim'
-Plug "rafamadriz/friendly-snippets"
-Plug "lukas-reineke/indent-blankline.nvim"
-Plug 'windwp/nvim-autopairs'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'mg979/vim-visual-multi'
+vim.api.nvim_create_autocmd("filetype", {
+  pattern = "netrw",
+  desc = "Mappings for netrw",
+  callback = function()
+    vim.keymap.set("n", "<space>", "<CR>", { remap = true, buffer = true })
+  end,
+})
 
-vim.call('plug#end')
 
--- Telescope
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
--- Colors Scheme
-require('monokai').setup {}
-
-require("toggleterm").setup()
-require("ibl").setup()
-require("nvim-autopairs").setup{}
+-- :W to sudo save files
+vim.api.nvim_create_user_command("W", ":lua require'utils'.sudo_write()<CR>", {})
