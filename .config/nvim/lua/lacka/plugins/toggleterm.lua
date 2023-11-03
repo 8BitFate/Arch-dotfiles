@@ -1,8 +1,9 @@
 return {
-  "akinsho/toggleterm.nvim",
-  version = "*",
-  opts = {},
+  'akinsho/toggleterm.nvim',
+  version = '*',
   config = function()
-    vim.keymap.set("n", "<leader>t", vim.cmd.ToggleTerm)
+    local tterm = require('toggleterm')
+    tterm.setup()
+    vim.keymap.set('n', '<leader>t', vim.cmd.ToggleTerm)
   end
 }
