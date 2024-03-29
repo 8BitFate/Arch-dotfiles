@@ -2,17 +2,23 @@ return {
   'nvim-telescope/telescope.nvim',
   tag = '0.1.4',
   dependencies = { 'nvim-lua/plenary.nvim' },
-  opts = {
-    defaults = {
-      mappings = {
-        n = {
-          ['<space>'] = 'select_default',
+  config = function()
+    -- local actions = require("telescope.actions")
+    local builtin = require('telescope.builtin')
+    local trouble = require("trouble.providers.telescope")
+
+    local telescope = require("telescope")
+
+    telescope.setup {
+      defaults = {
+        mappings = {
+          n = {
+            ["<c-t>"] = trouble.open_with_trouble,
+            ['<space>'] = 'select_default',
+          },
         },
       },
-    },
-  },
-  config = function()
-    local builtin = require('telescope.builtin')
+    }
 
     vim.keymap.set('n', '<C-p>', builtin.commands, {})
     vim.keymap.set('n', '<C-f>', builtin.find_files, {})

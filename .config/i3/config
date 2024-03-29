@@ -59,10 +59,10 @@ bindsym $mod+d exec --no-startup-id rofi -show drun -show-icons -theme Monokai
 bindsym $mod+Shift+d exec --no-startup-id rofi -show window -show-icons -theme Monokai
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -83,7 +83,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -97,7 +97,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-# bindsym $mod+space floating toggle
+bindsym $mod+Control+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+Shift+space focus mode_toggle
@@ -219,6 +219,13 @@ bindsym $mod+Control+Shift+L move container to workspace next; workspace next
 
 # Change keyboard layout
 
-bindsym mod4+space exec --no-startup-id /home/lacka/.scripts/i3/layout_switcher.sh
+ bindsym $mod+space exec "--no-startup-id xkb-switch -n, sudo pkill -SIGRTMIN+11 i3blocks"
 
+# Conky background
 exec --no-startup-id conky -d
+
+# Screenshot
+#interactive screenshot by pressing printscreen
+bindsym Print exec gnome-screenshot -i
+#crop-area screenshot by pressing Mod + printscreen
+bindsym $mod+Print exec gnome-screenshot -a

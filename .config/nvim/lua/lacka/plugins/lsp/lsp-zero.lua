@@ -14,6 +14,10 @@ return {
         buffer = bufnr,
         preserve_mappings = false,
       })
+      local status, telescope = pcall(require, 'telescope.builtin')
+      if (status) then
+        vim.keymap.set('n', 'gr', telescope.lsp_references, { buffer = bufnr })
+      end;
     end)
   end
 }

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 case $BLOCK_BUTTON in
-  1) ~/.scripts/i3/layout_switcher.sh > /dev/null ;;
+  1) xkb-switch -n
 esac
 
-lang=$(setxkbmap -query | sed -n -e 's/^layout:\s*//p')
+lang=$(xkb-switch | sed 's/([^)]*)//g')
 
 echo " ${lang^^}"

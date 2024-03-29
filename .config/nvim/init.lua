@@ -64,12 +64,16 @@ vim.opt.splitright = true
 vim.opt.display = 'lastline'
 vim.opt.whichwrap:append('<>[]hl')
 
+-- Diagnostic
+vim.diagnostic.config({ float = { source = true } })
+
 -- Leader
 vim.g.mapleader = ';'
 
--- copy and paste
+-- Paste without overwriteing register
 vim.keymap.set('x', '<leader>p', [['_dP]])
 
+-- TODO
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [['+y]])
 vim.keymap.set('n', '<leader>Y', [['+Y]])
 
@@ -88,24 +92,9 @@ vim.keymap.set('i', '<A-k>', '<Esc>:m .-2<CR>==gi')
 vim.keymap.set('n', '<C-d>', 'yypg;')
 vim.keymap.set('i', '<C-d>', '<esc>yypgi')
 
--- Quick insert mode exit
-vim.keymap.set('i', ';f', '<Esc>')
-
 -- Unhighlight
 vim.keymap.set('n', '<Esc>', ':nohlsearch<return><Esc>', { silent = true })
 vim.keymap.set('n', '<C-l>', ':let @/ = \'\'<return><C-l>')
-
--- Easy newline from normal mode
-vim.keymap.set('n', '<C-CR>', 'o<Esc>')
-vim.keymap.set('n', '<C-S-CR>', 'O<Esc>')
-
--- Newline without comment
-vim.keymap.set('n', '<CR>', '<C-CR>^D', { remap = true })
-vim.keymap.set('n', '<S-CR>', '<C-S-CR>^D', { remap = true })
-
--- Jump to empty newline in insert mode
-vim.keymap.set('i', '<S-CR>', '<ESC><CR>A', { remap = true })
-vim.keymap.set('i', '<C-S-CR>', '<ESC><C-CR>A', { remap = true })
 
 -- Moving between buffers
 vim.keymap.set('n', '<C-j>', ':bnext<CR>')
@@ -130,4 +119,3 @@ vim.api.nvim_create_autocmd('filetype', {
 
 -- :W to sudo save files
 vim.api.nvim_create_user_command('W', ':lua require\'utils\'.sudo_write()<CR>', {})
-
