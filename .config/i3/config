@@ -219,7 +219,7 @@ bindsym $mod+Control+Shift+L move container to workspace next; workspace next
 
 # Change keyboard layout
 
- bindsym $mod+space exec "--no-startup-id xkb-switch -n, sudo pkill -SIGRTMIN+11 i3blocks"
+ bindsym $mod+space exec --no-startup-id "xkb-switch -n; pkill -SIGRTMIN+11 i3blocks"
 
 # Conky background
 exec --no-startup-id conky -d
